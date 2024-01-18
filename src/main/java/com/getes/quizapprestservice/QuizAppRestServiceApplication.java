@@ -6,14 +6,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.elasticsearch.support.HttpHeaders;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootApplication
 public class QuizAppRestServiceApplication {
-	private static final Logger log = LoggerFactory.getLogger(QuizAppRestServiceApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(QuizAppRestServiceApplication.class, args);
@@ -22,7 +22,6 @@ public class QuizAppRestServiceApplication {
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
 		// Do any additional configuration here
-		// builder.rootUri("http://localhost:9200");
 		return builder.build();
 	}
 
@@ -30,9 +29,11 @@ public class QuizAppRestServiceApplication {
 	public HttpHeaders headers() {
 		HttpHeaders headers = new HttpHeaders();
 
-		String elasticUser = "elastic";
-		String elasticPass = "pIB4xZsWJ2DO1VkoUD*q";
+		String elasticUser = "elastic"; // TODO: Environment variable.
+		String elasticPass = "pIB4xZsWJ2DO1VkoUD*q"; // TODO: Environment variable.
 		headers.setBasicAuth(elasticUser, elasticPass);
+
+		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		return headers;
 	}
